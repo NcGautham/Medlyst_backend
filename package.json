@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js",
+    "start": "node migrations/runMigrations.js && node server.js",
     "migrate": "node migrations/runMigrations.js",
     "test-concurrency": "node tests/concurrentTest.js"
   },
