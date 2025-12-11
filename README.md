@@ -60,4 +60,4 @@ The REST API server for the Medlyst doctor appointment booking platform. Built w
 The server runs on port `5001` by default.
 
 ---
-&copy; 2024 Medlyst. All rights reserved.
+&copy; 2025 Medlyst. All rights reserved.
