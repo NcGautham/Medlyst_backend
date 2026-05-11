@@ -1,4 +1,10 @@
 require('dotenv').config();
+
+if (!process.env.DATABASE_URL || !String(process.env.DATABASE_URL).trim()) {
+  console.error('FATAL: DATABASE_URL is missing or empty. Add it in Render → Environment.');
+  process.exit(1);
+}
+
 const express = require('express');
 const cors = require('cors');
 
