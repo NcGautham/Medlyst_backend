@@ -2,8 +2,24 @@ CREATE TABLE IF NOT EXISTS doctors (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   speciality TEXT,
+  bio TEXT,
+  hospital TEXT,
+  photo_url TEXT,
+  tags TEXT,
+  experience INTEGER DEFAULT 0,
+  rating REAL DEFAULT 5.0,
+  review_count INTEGER DEFAULT 0,
   created_at TIMESTAMP DEFAULT now()
 );
+
+-- Upgrade older DBs that only had the minimal doctors row (idempotent)
+ALTER TABLE doctors ADD COLUMN IF NOT EXISTS bio TEXT;
+ALTER TABLE doctors ADD COLUMN IF NOT EXISTS hospital TEXT;
+ALTER TABLE doctors ADD COLUMN IF NOT EXISTS photo_url TEXT;
+ALTER TABLE doctors ADD COLUMN IF NOT EXISTS tags TEXT;
+ALTER TABLE doctors ADD COLUMN IF NOT EXISTS experience INTEGER DEFAULT 0;
+ALTER TABLE doctors ADD COLUMN IF NOT EXISTS rating REAL DEFAULT 5.0;
+ALTER TABLE doctors ADD COLUMN IF NOT EXISTS review_count INTEGER DEFAULT 0;
 
 CREATE TABLE IF NOT EXISTS slots (
   id SERIAL PRIMARY KEY,

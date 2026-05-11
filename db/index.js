@@ -2,10 +2,14 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+const conn = process.env.DATABASE_URL || '';
+// Supabase and most cloud Postgres require TLS even when NODE_ENV is unset on first deploy
+const needsSsl =
+  process.env.NODE_ENV === 'production' || conn.includes('supabase.co');
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  // In production (Render/Heroku) we need to allow SSL
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  ssl: needsSsl ? { rejectUnauthorized: false } : false,
 });
 
 module.exports = pool;

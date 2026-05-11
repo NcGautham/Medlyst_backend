@@ -9,10 +9,13 @@ async function run() {
     console.log('Migration completed.');
   } catch (err) {
     console.error('Migration error:', err);
+    throw err;
   } finally {
-    pool.end();
+    await pool.end().catch((e) => console.error('pool.end:', e));
   }
 }
 
-run();
+run()
+  .then(() => process.exit(0))
+  .catch(() => process.exit(1));
 
