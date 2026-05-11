@@ -4,12 +4,19 @@ exports.createDoctor = async (req, res) => {
   const { name, speciality, bio, hospital, photo_url, tags, experience } = req.body;
   if (!name) return res.status(400).json({ error: 'name required' });
 
+  let tagsForDb = tags ?? null;
+  if (Array.isArray(tagsForDb)) {
+    tagsForDb = JSON.stringify(tagsForDb);
+  } else if (tagsForDb && typeof tagsForDb === 'object') {
+    tagsForDb = JSON.stringify(tagsForDb);
+  }
+
   try {
     const { rows } = await pool.query(
       `INSERT INTO doctors 
        (name, speciality, bio, hospital, photo_url, tags, experience, rating, review_count) 
        VALUES ($1, $2, $3, $4, $5, $6, $7, 5.0, 0) RETURNING *`,
-      [name, speciality || null, bio || null, hospital || null, photo_url || null, tags || null, experience || 0]
+      [name, speciality || null, bio || null, hospital || null, photo_url || null, tagsForDb, experience || 0]
     );
     res.status(201).json(rows[0]);
   } catch (err) {
