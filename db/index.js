@@ -1,4 +1,10 @@
 // db/index.js
+// Render (and some hosts) cannot reach Supabase over IPv6; DNS often returns AAAA first → ENETUNREACH
+const dns = require('node:dns');
+if (typeof dns.setDefaultResultOrder === 'function') {
+  dns.setDefaultResultOrder('ipv4first');
+}
+
 const { Pool } = require('pg');
 require('dotenv').config();
 
